@@ -1,4 +1,4 @@
-const API_KEY = '8f940ac94eb04ac6b1b891d7c0977a90';
+const API_KEY = '';
 
 function loadDataForNavBar() {
     $.get('https://newsapi.org/v2/top-headlines/sources?apiKey=' + API_KEY, function (data, status) {
