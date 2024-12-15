@@ -9,12 +9,14 @@ function loadDataForNavBar() {
 function renderSourceNews(sourceId) {
     $.get(`https://newsapi.org/v2/top-headlines?sources=${sourceId}&apiKey=${API_KEY}`, function (data, status) {
         renderNewsData(data);
+        updateCarousel(data);
     });
 }
 
 function renderForNewsSearching(queryId) {
     $.get(`https://newsapi.org/v2/everything?q=${queryId}&sortBy=publishedAt&apiKey=${API_KEY}`, function (data, status) {
         renderNewsData(data);
+        updateCarousel(data);
     });
 }
 
@@ -78,6 +80,32 @@ function searchForNewsController(event) {
 
     renderForNewsSearching(query);
 }
+
+function updateCarousel(data) {
+    const carouselInner = $("#carousel-inner");
+    carouselInner.html('');
+
+    if (!data.articles || data.articles.length === 0) {
+        carouselInner.html('<div class="carousel-item active"><div class="d-block w-100 text-center p-5">No articles available.</div></div>');
+        return;
+    }
+
+    data.articles.slice(0, 5).forEach((article, index) => {
+        const isActive = index === 0 ? 'active' : '';
+        const slide = `
+            <div class="carousel-item ${isActive}">
+                <img src="${article.urlToImage}" class="d-block w-100" alt="${article.title}">
+                <div class="carousel-caption d-none d-md-block">
+                    <h5>${article.title}</h5>
+                    <p>${article.description}</p>
+                    <a href="${article.url}" target="_blank" class="btn btn-primary btn-sm">Read More</a>
+                </div>
+            </div>
+        `;
+        carouselInner.append(slide);
+    });
+}
+
 
 // main();
 loadDataForNavBar();

@@ -56,6 +56,7 @@ main {
     right: 15px;
 }
 
-#carouselExampleIndicators{
-
+.carousel-inner img{
+    height: 366px;
 }
+
